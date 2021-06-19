@@ -25,7 +25,7 @@ int APIENTRY WinMain (HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR CmdLine, int n
 
         sprintf(origdir,"%s\\%s", wallpath, fdata.cFileName );
         sprintf(fnewname, "%s.jpg", fdata.cFileName);
-        if (fdata.nFileSizeLow > 150000)
+        if (fdata.nFileSizeLow > 160000)
         CopyFileA(origdir, fnewname, TRUE);
     }
 
