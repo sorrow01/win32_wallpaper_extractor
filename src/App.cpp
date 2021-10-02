@@ -3,7 +3,7 @@
 
 App::App::App(int argc, char **argv)
 {
-    if (argc > 1) this->isAutoRun = true;
+    if (argc > 2) this->isAutoRun = true;
     this->mainApp = new QApplication(argc, argv);
 
 }
@@ -49,15 +49,16 @@ int App::App::Run()
         return EXIT_SUCCESS;
     }
     
-
+    this->SetupGui();
+    return this->mainApp->exec();
 }
 
 void App::App::SetupGui()
 {
-    QWidget mainWindow;
+    static QWidget mainWindow;
     mainWindow.setFixedSize(657, 308);
 
-    QLabel installLabel, wallpaperLabel;
+    static QLabel installLabel, wallpaperLabel;
     installLabel.setGeometry(60, 70, 71, 31);
     installLabel.setText("Install Path: ");
     installLabel.setParent(&mainWindow);
@@ -65,7 +66,7 @@ void App::App::SetupGui()
     wallpaperLabel.setText("Wallpapers Path: ");
     wallpaperLabel.setParent(&mainWindow);
 
-    QLineEdit installLine, wallpaperLine;
+    static QLineEdit installLine, wallpaperLine;
     installLine.setGeometry(140, 70, 391, 31);
     installLine.setText(((std::string)getenv("appdata") + (std::string)"\\WinWallpaper").c_str());
     installLine.setParent(&mainWindow);
@@ -73,13 +74,13 @@ void App::App::SetupGui()
     wallpaperLine.setText(((std::string)getenv("userprofile") + (std::string)"\\Desktop\\WinWallpapers").c_str());
     wallpaperLine.setParent(&mainWindow);
 
-    QCheckBox runCheck;
+    static QCheckBox runCheck;
     runCheck.setGeometry(140, 200, 121, 21);
     runCheck.setText("Run at startup");
     runCheck.setChecked(true);
     runCheck.setParent(&mainWindow);
 
-    QPushButton installOpen, wallpaperOpen, nextOpen, cancelOpen;
+    static QPushButton installOpen, wallpaperOpen, nextOpen, cancelOpen;
     installOpen.setGeometry(500, 70, 31, 31);
     installOpen.setText("Open");
     installOpen.setParent(&mainWindow);
@@ -93,5 +94,5 @@ void App::App::SetupGui()
     cancelOpen.setText("Cancel");
     cancelOpen.setParent(&mainWindow);
 
-
+    mainWindow.show();
 }
