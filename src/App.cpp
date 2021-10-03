@@ -80,19 +80,34 @@ void App::App::SetupGui()
     runCheck.setChecked(true);
     runCheck.setParent(&mainWindow);
 
-    static QPushButton installOpen, wallpaperOpen, nextOpen, cancelOpen;
-    installOpen.setGeometry(500, 70, 31, 31);
+    static QPushButton installOpen, wallpaperOpen, next, cancel;
+    installOpen.setGeometry(530, 70, 31, 31);
     installOpen.setText("Open");
     installOpen.setParent(&mainWindow);
-    wallpaperOpen.setGeometry(500, 140, 31, 31);
+    wallpaperOpen.setGeometry(530, 140, 31, 31);
     wallpaperOpen.setText("Open");
     wallpaperOpen.setParent(&mainWindow);
-    nextOpen.setGeometry(540, 260, 91, 31);
-    nextOpen.setText("Next");
-    nextOpen.setParent(&mainWindow);
-    cancelOpen.setGeometry(430, 260, 91, 31);
-    cancelOpen.setText("Cancel");
-    cancelOpen.setParent(&mainWindow);
+    next.setGeometry(540, 260, 91, 31);
+    next.setText("Next");
+    next.setParent(&mainWindow);
+    cancel.setGeometry(430, 260, 91, 31);
+    cancel.setText("Cancel");
+    cancel.setParent(&mainWindow);
+
+    QObject::connect(&installOpen, &QPushButton::clicked, [](){installLine.setText(QFileDialog::getExistingDirectory(nullptr, "Select a directory"));});
+    QObject::connect(&wallpaperOpen, &QPushButton::clicked, [](){wallpaperLine.setText(QFileDialog::getExistingDirectory(nullptr, "Select a directory"));});
+    QObject::connect(&cancel, &QPushButton::clicked, [](){exit(1);});
+
+
+    QObject::connect(&next, &QPushButton::clicked, [&]{
+        if(!Utility::CopyFiles(installLine.text().toStdString().c_str(), wallpaperLine.text().toStdString().c_str()))exit(MessageBoxA(NULL, "Could not copy files", "Error", MB_ICONERROR));
+        if (runCheck.isChecked()) if(!Utility::SetRegAutoStart((installLine.text().toStdString() + (std::string)"\\win32_wallpaper_extractor.exe").c_str())) exit(MessageBoxA(NULL, "Could not set autorun", "Error", MB_ICONERROR));
+        if (!Utility::SetRegWallpapersPath(wallpaperLine.text().toStdString().c_str())) exit(MessageBoxA(NULL, "Could not set reg key", "Error", MB_ICONERROR));
+        Utility::CreateDesktopLink((installLine.text().toStdString() + (std::string)"\\win32_wallpaper_extractor.exe").c_str());
+        MessageBoxA(NULL, "Successfully installed the app", "Success !", MB_OK);
+        exit(EXIT_SUCCESS);
+        });
+    
 
     mainWindow.show();
 }

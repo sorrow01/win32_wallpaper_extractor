@@ -7,6 +7,7 @@ project("win32_wallpaper_extractor")
 add_executable(${PROJECT_NAME} 
         ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/App.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Utility.cpp
 )
 
 #END EDITABLE STUFF
