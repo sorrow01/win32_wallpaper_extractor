@@ -43,3 +43,8 @@ void Utility::CreateDesktopLink(const char *installPath)
 {
 
 }
+
+void Utility::ExecApp(const char *installPath)
+{
+    
+}

@@ -10,6 +10,7 @@ namespace Utility
     bool SetRegAutoStart(const char *installPath);
     bool SetRegWallpapersPath(const char *wallpapersPath);
     void CreateDesktopLink(const char *installPath);
+    void ExecApp(const char *installPath);
 }
 
 #endif
